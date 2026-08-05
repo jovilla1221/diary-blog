@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diary Kita — Blog Cerita & Hobi</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --cream: #faf5f7;
+  --blush: #f5e1e4;
+  --rose: #c4898f;
+  --gold: #c9a06c;
+  --ink: #4a2c35;
+  --muted: rgba(74,44,53,0.55);
+  --soft-pink: #fce4ec;
+  --card-bg: #fff8f9;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Background particles */
+.petal-bg {
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  pointer-events: none; z-index: 0; overflow: hidden;
+}
+.petal {
+  position: absolute; bottom: -10px;
+  width: 12px; height: 12px;
+  background: radial-gradient(circle, var(--rose) 0%, transparent 70%);
+  border-radius: 50% 0 50% 0;
+  opacity: 0.3;
+  animation: petalFall linear infinite;
+}
+@keyframes petalFall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity:0; }
+  10% { opacity:0.3; }
+  90% { opacity:0.3; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity:0; }
+}
+
+/* Navigation */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  background: rgba(250,245,247,0.85);
+  backdrop-filter: blur(12px);
+  padding: 14px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid rgba(196,137,143,0.15);
+}
+.nav-brand {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.5rem;
+  color: var(--rose);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  color: var(--ink); text-decoration: none;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.9rem; font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--rose); }
+
+/* Hero */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+}
+.hero-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: var(--muted);
+  font-style: italic;
+  max-width: 500px;
+  margin-bottom: 40px;
+}
+.hero-cta {
+  display: inline-block;
+  padding: 14px 36px;
+  background: var(--rose);
+  color: #fff;
+  border: none; border-radius: 30px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.95rem; font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+  letter-spacing: 0.5px;
+}
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(196,137,143,0.35);
+}
+
+/* Sections */
+section { padding: 80px 24px; position: relative; z-index: 1; }
+.section-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2rem, 4vw, 3rem);
+  text-align: center;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+.section-sub {
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 48px;
+  font-size: 1.05rem;
+}
+
+/* Blog Grid */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.blog-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(74,44,53,0.06);
+  transition: transform 0.4s, box-shadow 0.4s;
+  cursor: pointer;
+}
+.blog-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(74,44,53,0.12);
+}
+.card-img {
+  width: 100%; height: 200px;
+  object-fit: cover;
+  display: block;
+}
+.card-body { padding: 24px; }
+.card-tag {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--rose);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem; font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+.card-excerpt {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-date {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.8rem;
+  color: var(--gold);
+  margin-top: 14px;
+}
+
+/* Hobby Grid */
+.hobby-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.hobby-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(74,44,53,0.06);
+  transition: transform 0.3s;
+}
+.hobby-card:hover { transform: scale(1.03); }
+.hobby-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  display: block;
+}
+.hobby-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 600;
+  margin-bottom: 6px;
+}
+.hobby-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* About */
+.about-section {
+  max-width: 650px;
+  margin: 0 auto;
+  text-align: center;
+}
+.about-section p {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.about-avatar {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--blush);
+  margin-bottom: 20px;
+}
+
+/* Contact */
+.contact-section { text-align: center; }
+.contact-links {
+  display: flex; justify-content: center; gap: 20px;
+  margin-top: 24px;
+}
+.contact-links a {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--rose);
+  font-size: 1.2rem;
+  text-decoration: none;
+  box-shadow: 0 2px 12px rgba(74,44,53,0.06);
+  transition: transform 0.3s, color 0.3s;
+}
+.contact-links a:hover {
+  transform: translateY(-3px);
+  color: var(--ink);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  border-top: 1px solid rgba(196,137,143,0.15);
+  position: relative; z-index: 1;
+}
+
+/* Typewriter cursor */
+.cursor-blink {
+  display: inline-block;
+  width: 2px; height: 1em;
+  background: var(--rose);
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav { padding: 12px 16px; }
+  .nav-links { gap: 16px; }
+  .nav-links a { font-size: 0.8rem; }
+  section { padding: 60px 16px; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .hobby-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .hobby-grid { grid-template-columns: 1fr; }
+  .nav-links { gap: 12px; }
+}
+
+/* Floating hearts */
+.heart-float {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  animation: heartFloat 6s ease-in-out infinite;
+  opacity: 0.15;
+  font-size: 1.2rem;
+}
+@keyframes heartFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity:0.15; }
+  50% { transform: translateY(-30px) rotate(10deg); opacity:0.25; }
+}
+
+/* Modal for blog post detail */
+.modal-overlay {
+  position: fixed; inset:0;
+  background: rgba(74,44,53,0.4);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex; justify-content: center; align-items: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.modal-overlay.active { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--cream);
+  border-radius: 20px;
+  max-width: 650px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(74,44,53,0.2);
+}
+.modal-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none;
+  font-size: 1.4rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.modal-close:hover { color: var(--rose); }
+.modal-img {
+  width: 100%; height: 280px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+.modal-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+.modal-meta {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.8rem;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.modal-body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.modal-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--soft-pink);
+  color: var(--rose);
+  border-radius: 20px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* Edit mode */
+.edit-btn {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--rose);
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(196,137,143,0.4);
+  z-index: 150;
+  transition: transform 0.3s;
+}
+.edit-btn:hover { transform: scale(1.1); }
+
+/* Edit panel */
+.edit-panel {
+  position: fixed; top: 0; right: -400px;
+  width: 380px; max-width: 90vw;
+  height: 100vh;
+  background: var(--cream);
+  z-index: 300;
+  padding: 32px 24px;
+  overflow-y: auto;
+  box-shadow: -4px 0 30px rgba(74,44,53,0.1);
+  transition: right 0.4s ease;
+  border-left: 1px solid rgba(196,137,143,0.15);
+}
+.edit-panel.open { right: 0; }
+.edit-panel h3 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: var(--rose);
+}
+.edit-panel label {
+  display: block;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 6px;
+  margin-top: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.edit-panel input, .edit-panel textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgba(196,137,143,0.2);
+  border-radius: 10px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  background: #fff;
+  color: var(--ink);
+  resize: vertical;
+}
+.edit-panel textarea { min-height: 80px; }
+.edit-panel .save-btn {
+  margin-top: 24px;
+  width: 100%;
+  padding: 14px;
+  background: var(--rose);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.edit-panel .save-btn:hover { background: #b0707a; }
+.edit-panel .reset-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid var(--rose);
+  color: var(--rose);
+  border-radius: 12px;
+  font-family: 'Quicksand', sans-serif;
+  cursor: pointer;
+}
+.edit-panel .reset-btn:hover { background: var(--soft-pink); }
+.edit-overlay {
+  position: fixed; inset:0;
+  background: rgba(74,44,53,0.3);
+  z-index: 250;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.edit-overlay.active { opacity: 1; pointer-events: all; }
+</style>
+</head>
+<body>
+
+<!-- Background petals -->
+<div class="petal-bg" id="petalBg"></div>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="nav-brand">Diary Kita</a>
+  <ul class="nav-links">
+    <li><a href="#beranda">Beranda</a></li>
+    <li><a href="#cerita">Cerita</a></li>
+    <li><a href="#hobi">Hobi</a></li>
+    <li><a href="#tentang">Tentang</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="beranda">
+  <h1 class="hero-title" id="heroTitle"></h1>
+  <p class="hero-sub" id="heroSub"></p>
+  <a href="#cerita" class="hero-cta">Jelajahi Diary</a>
+</section>
+
+<!-- Blog Posts -->
+<section id="cerita">
+  <h2 class="section-title">Cerita & Kisah</h2>
+  <p class="section-sub">Setiap tulisan adalah potongan dari perjalanan</p>
+  <div class="blog-grid" id="blogGrid"></div>
+</section>
+
+<!-- Hobbies -->
+<section id="hobi">
+  <h2 class="section-title">Hobi & Passion</h2>
+  <p class="section-sub">Apa yang membuatku hidup lebih berwarna</p>
+  <div class="hobby-grid" id="hobbyGrid"></div>
+</section>
+
+<!-- About -->
+<section id="tentang">
+  <h2 class="section-title">Tentang</h2>
+  <p class="section-sub">Siapa di balik diary ini</p>
+  <div class="about-section reveal">
+    <img src="https://picsum.photos/seed/diary-avatar/200/200" alt="avatar" class="about-avatar">
+    <p>Hai, selamat datang di Diary Kita 🌸<br>Ruang kecil untuk menulis cerita, berbagi hobi, dan menyimpan momen-momen indah.</p>
+    <p>Setiap orang punya cerita yang layak diceritakan. Mari kita saling menginspirasi.</p>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact-section">
+  <h2 class="section-title">Hubungi</h2>
+  <p class="section-sub">Punya cerita untuk dibagikan? Mari ngobrol</p>
+  <div class="contact-links">
+    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+    <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
+    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>Diary Kita — Built with ❤️ &amp; kopi</p>
+</footer>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<!-- Edit button -->
+<button class="edit-btn" id="editBtn" title="Edit konten" style="display:none"><i class="fas fa-pen"></i></button>
+
+<!-- Edit panel -->
+<div class="edit-overlay" id="editOverlay"></div>
+<div class="edit-panel" id="editPanel">
+  <h3>✨ Edit Konten</h3>
+  <label>Hero Title</label>
+  <input type="text" id="editHeroTitle">
+  <label>Hero Subtitle</label>
+  <input type="text" id="editHeroSub">
+  <label>Blog Posts (JSON array)</label>
+  <textarea id="editBlogPosts" rows="8"></textarea>
+  <label>Hobbies (JSON array)</label>
+  <textarea id="editHobbies" rows="6"></textarea>
+  <button class="save-btn" id="saveBtn">Simpan</button>
+  <button class="reset-btn" id="resetBtn">Reset ke Default</button>
+</div>
+
+<script>
+// ========== DATA ==========
+const DEFAULT_DATA = {
+  heroTitle: "Diary Kita",
+  heroSub: "Kumpulan cerita, hobi, dan momen-momen kecil yang berarti",
+  posts: [
+    {
+      tag: "Cerita",
+      title: "Hujan di Bulan Maret",
+      excerpt: "Tadi paga hujan turun dengan tiba-tiba. Aku duduk di balkon sambil ngopi dan mendengarkan suara tetes hujan mengenai daun. Beberapa momen kecil yang sering terlewatkan, tapi ternyata begitu indah.",
+      img: "https://picsum.photos/seed/hujan-maret/600/400",
+      date: "12 Maret 2026"
+    },
+    {
+      tag: "Hobi",
+      title: "Belajar Fotografi Jalanan",
+      excerpt: "Aku mulai tertarik fotografi jalanan sejak bulan lalu. Setiap akhir pekan jalan-jalan ke pasar tua mencari objek menarik. Wajah-wajah unik, warna-warni bangunan tua, dan cahaya yang selalu berubah.",
+      img: "https://picsum.photos/seed/foto-jalanan/600/400",
+      date: "5 Maret 2026"
+    },
+    {
+      tag: "Kisah",
+      title: "Kafe Pertama di Kota Lama",
+      excerpt: "Nemuin kafe kecil di gang sempit kota lama. Interiornya kayu tua dengan tanaman gantung di mana-mana. Kopinya strong banget dan pelayannya tersenyum ramah. Tempat yang bikin nyaman buat ngobrol sendiri.",
+      img: "https://picsum.photos/seed/kafe-lama/600/400",
+      date: "28 Februari 2026"
+    },
+    {
+      tag: "Hobi",
+      title: "Weekend Baking Session",
+      excerpt: "Akhir pekan ini coba resep banana bread baru. Ternyata hasilnya lebih lembut dari biasanya. Aku suka banget proses memanggang — aroma di dapur, suara oven, dan antisipasi gigitan pertama.",
+      img: "https://picsum.photos/seed/baking-weekend/600/400",
+      date: "20 Februari 2026"
+    },
+    {
+      tag: "Cerita",
+      title: "Pagi di Taman Kota",
+      excerpt: "Lari pagi di taman kota jadi ritual baru. Jalanan masih sepi, udara segar, dan dedaunan basah setelah hujan. Kadang nemuin teman lama yang juga lagi jogging — senyum kecil tanpa kata pun terasa cukup.",
+      img: "https://picsum.photos/seed/taman-pagi/600/400",
+      date: "15 Februari 2026"
+    },
+    {
+      tag: "Kisah",
+      title: "Buku yang Mengubah Perspektifku",
+      excerpt: "Selesai baca buku tentang minimalisme minggu ini. Beberapa hal yang tadinya terasa berat, sekarang terasa ringan. Mungkin memangnya hidup ini gak perlu dipenuhi banyak hal — cukup yang bikin hati tenang.",
+      img: "https://picsum.photos/seed/buku-minimalis/600/400",
+      date: "8 Februari 2026"
+    }
+  ],
+  hobbies: [
+    { icon: "📷", name: "Fotografi", desc: "Menangkap momen & cahaya" },
+    { icon: "🍞", name: "Baking", desc: "Roti & kue homemade" },
+    { icon: "☕", name: "Kopi", desc: "Mencari biji & rasa baru" },
+    { icon: "📚", name: "Membaca", desc: "Buku & cerita fiksi" },
+    { icon: "🎨", name: "Menggambar", desc: "Sketsa & cat air" },
+    { icon: "🌿", name: "Tanaman", desc: "Merawat tanaman indoor" }
+  ]
+};
+
+// Load from localStorage or use default
+function loadData() {
+  const stored = localStorage.getItem('diary-kita-data');
+  if (stored) {
+    try { return JSON.parse(stored); } catch(e) {}
+  }
+  return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+function saveData(data) {
+  localStorage.setItem('diary-kita-data', JSON.stringify(data));
+}
+
+let DATA = loadData();
+
+// ========== RENDER ==========
+function renderBlog() {
+  const grid = document.getElementById('blogGrid');
+  grid.innerHTML = DATA.posts.map((p, i) => `
+    <article class="blog-card reveal" onclick="openPost(${i})">
+      <img src="${p.img}" alt="${p.title}" class="card-img" loading="lazy">
+      <div class="card-body">
+        <div class="card-tag">${p.tag}</div>
+        <h3 class="card-title">${p.title}</h3>
+        <p class="card-excerpt">${p.excerpt}</p>
+        <div class="card-date">${p.date}</div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function renderHobbies() {
+  const grid = document.getElementById('hobbyGrid');
+  grid.innerHTML = DATA.hobbies.map(h => `
+    <div class="hobby-card reveal">
+      <span class="hobby-icon">${h.icon}</span>
+      <div class="hobby-name">${h.name}</div>
+      <div class="hobby-desc">${h.desc}</div>
+    </div>
+  `).join('');
+}
+
+function openPost(idx) {
+  const p = DATA.posts[idx];
+  const overlay = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <img src="${p.img}" alt="${p.title}" class="modal-img">
+    <div class="modal-tag">${p.tag}</div>
+    <h2 class="modal-title">${p.title}</h2>
+    <div class="modal-meta">${p.date}</div>
+    <div class="modal-body">${p.excerpt}</div>
+  `;
+  overlay.classList.add('active');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ========== EDIT MODE ==========
+let editMode = false;
+const editBtn = document.getElementById('editBtn');
+const editPanel = document.getElementById('editPanel');
+const editOverlay = document.getElementById('editOverlay');
+
+editBtn.addEventListener('click', () => {
+  editMode = !editMode;
+  editPanel.classList.toggle('open', editMode);
+  editOverlay.classList.toggle('active', editMode);
+  if (editMode) {
+    document.getElementById('editHeroTitle').value = DATA.heroTitle;
+    document.getElementById('editHeroSub').value = DATA.heroSub;
+    document.getElementById('editBlogPosts').value = JSON.stringify(DATA.posts, null, 2);
+    document.getElementById('editHobbies').value = JSON.stringify(DATA.hobbies, null, 2);
+  }
+});
+
+editOverlay.addEventListener('click', () => {
+  editMode = false;
+  editPanel.classList.remove('open');
+  editOverlay.classList.remove('active');
+});
+
+document.getElementById('saveBtn').addEventListener('click', () => {
+  try {
+    DATA.heroTitle = document.getElementById('editHeroTitle').value || DATA.heroTitle;
+    DATA.heroSub = document.getElementById('editHeroSub').value || DATA.heroSub;
+    DATA.posts = JSON.parse(document.getElementById('editBlogPosts').value);
+    DATA.hobbies = JSON.parse(document.getElementById('editHobbies').value);
+    saveData(DATA);
+    renderAll();
+    editMode = false;
+    editPanel.classList.remove('open');
+    editOverlay.classList.remove('active');
+  } catch(e) {
+    alert('Format JSON tidak valid. Periksa lagi ya.');
+  }
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  localStorage.removeItem('diary-kita-data');
+  DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  renderAll();
+  editMode = false;
+  editPanel.classList.remove('open');
+  editOverlay.classList.remove('active');
+});
+
+function renderAll() {
+  renderBlog();
+  renderHobbies();
+  document.getElementById('heroTitle').textContent = DATA.heroTitle;
+  document.getElementById('heroSub').textContent = DATA.heroSub;
+  initScrollReveal();
+}
+
+// ========== HERO TYPEWRITER ==========
+function typewriter(el, text, speed = 80) {
+  let i = 0;
+  el.innerHTML = '';
+  function type() {
+    if (i < text.length) {
+      el.innerHTML = text.substring(0, i + 1) + '<span class="cursor-blink"></span>';
+      i++;
+      setTimeout(type, speed + Math.random() * 40);
+    } else {
+      setTimeout(() => { el.innerHTML = text; }, 2000);
+    }
+  }
+  type();
+}
+
+// ========== SCROLL REVEAL ==========
+function initScrollReveal() {
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+}
+
+// ========== PETAL BACKGROUND ==========
+function createPetals() {
+  const bg = document.getElementById('petalBg');
+  for (let i = 0; i < 15; i++) {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.left = Math.random() * 100 + '%';
+    petal.style.animationDuration = (15 + Math.random() * 20) + 's';
+    petal.style.animationDelay = (Math.random() * 15) + 's';
+    petal.style.width = (8 + Math.random() * 8) + 'px';
+    petal.style.height = petal.style.width;
+    bg.appendChild(petal);
+  }
+}
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded', () => {
+  renderAll();
+  createPetals();
+  typewriter(document.getElementById('heroTitle'), DATA.heroTitle, 100);
+
+  // Show edit button after 3s
+  setTimeout(() => { editBtn.style.display = 'flex'; }, 3000);
+});
+
+// Keyboard shortcut Ctrl+E for edit
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 'e') {
+    e.preventDefault();
+    editBtn.click();
+  }
+});
+
+// Close modal on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+</body>
+</html>
